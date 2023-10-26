@@ -37,11 +37,13 @@ def scrape(maxResults, query_input, user, password):
     try:
         browser.find_element('xpath','/html/body/div/main/div/form/p/button').click()
         time.sleep(1)
-        browser.find_element('xpath','//*[@id="session_key"]').click()
-        keyboard.write(user)
+        loginInput = browser.find_element('xpath','//*[@id="session_key"]')
+        loginInput.click()
+        loginInput.send_keys(user)
         time.sleep(1)
-        browser.find_element('xpath','//*[@id="session_password"]').click()
-        keyboard.write(password)
+        passwordInput = browser.find_element('xpath','//*[@id="session_password"]')
+        passwordInput.click()
+        passwordInput.send_keys(password)
         time.sleep(1)
         browser.find_element('xpath','/html/body/div/main/div/div/form[1]/div[2]/button').click()
         time.sleep(2)
@@ -56,10 +58,13 @@ def scrape(maxResults, query_input, user, password):
             print('Error logging in')
             browser.quit()
             quit()
-        keyboard.write(user)
+        loginInput = browser.find_element('xpath','//*[@id="session_key"]')
+        loginInput.click()
+        loginInput.send_keys(user)
         time.sleep(1)
-        browser.find_element('xpath','//*[@id="session_password"]').click()
-        keyboard.write(password)
+        passwordInput = browser.find_element('xpath','//*[@id="session_password"]')
+        passwordInput.click()
+        passwordInput.send_keys(password)
         time.sleep(1)
         browser.find_element('xpath','//*[@id="main-content"]/section[1]/div/div/form/div[2]/button').click()
         time.sleep(2)
@@ -73,11 +78,12 @@ def scrape(maxResults, query_input, user, password):
                 try:
                     for j in range(1,11):
                         print('Getting user at: ' + str(j))                     
-                        try:                                                              
-                            connect = browser.find_element(By.XPATH, '/html/body/div[4]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li[' + str(j) + ']/div/div/div[3]/div/button').text
+                        try:                                                            
+                            connect = browser.find_element(By.XPATH, '/html/body/div[4]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li[' + str(j) + ']/div/div/div/div[3]/div/button').text                                         
                             if(connect == 'Connect' or connect == 'Conectar'):
                                 print('Connection available')
-                                browser.find_element(By.XPATH, '/html/body/div[4]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li[' + str(j) + ']/div/div/div[3]/div/button').click()
+                                browser.find_element(By.XPATH, '/html/body/div[4]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li[' + str(j) + ']/div/div/div/div[3]/div/button').click()
+    
                                 time.sleep(random.uniform(1, 2))
                                 browser.find_element(By.XPATH, '/html/body/div[3]/div/div/div[3]/button[2]').click()
                                 results+=1   
@@ -87,8 +93,9 @@ def scrape(maxResults, query_input, user, password):
                                     return results
                             else:
                                 print('User does not accept connections')
-                        except:
+                        except Exception as e:
                                 print('Already connected')
+                                print(str(e))
                         
                 except:
                     print('Error in user at: ' + str(j))
